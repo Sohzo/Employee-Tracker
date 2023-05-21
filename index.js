@@ -1,8 +1,21 @@
 const inquirer = require('inquirer');
+const mysql = require('mysql2');
+
+const con = mysql.createConnection({
+    host:'localhost',
+    user:'root',
+    password:'012204Lovelexy()'
+});
+
+con.connect(async function(err) {
+    if(err) throw err;
+    console.log("Connected to mysql at " +con.threadId+"\n");
+    showMenu();
+});
 
 
 const showMenu = () => {
-    const menu = [
+    inquirer.prompt ([
         {
             type: 'list',
             name: 'menu',
@@ -18,9 +31,12 @@ const showMenu = () => {
                 { name: 'Quit', value: 'quit'}
             ]
         }
-    ]
+    ]).then((answers) => {
+        const { choices } = answers;
 
-    return inquirer.prompt(menu);
+        if (choices === 'ViewEmployees') {
+            console.log('test');
+        }
+    }) 
 }
-
 
