@@ -19,8 +19,8 @@ CREATE TABLE roles (
 
 CREATE TABLE employees (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL, 
+    first_name VARCHAR(30),
+    last_name VARCHAR(30), 
     role_id INT,
     INDEX role_ind (role_id),
     CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL,
