@@ -67,9 +67,15 @@ const showMenu = () => {
 viewEmployees = () => {
     console.log('Showing all employees\n')
 
-    const sql = `SELECT * FROM employees`
-    con.query(sql, (err) => {
+    const sql = `SELECT * FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON roles.id = departments.id`
+
+    con.query(sql, (err, res) => {
         if (err) throw err;
+
+        console.table(res);
+
+        showMenu();
+
     })
 }
 

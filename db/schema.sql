@@ -17,14 +17,14 @@ CREATE TABLE roles (
     salary DECIMAL NOT NULL
 );
 
-/*CREATE TABLE employees (
+CREATE TABLE employees (
     id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL, 
-    title VARCHAR(30) NOT NULL,
-    department
-    salary ,
-    manager VARCHAR(30) NOT NULL
+    role_id INT,
+    INDEX role_ind (role_id),
+    CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL,
+    manager VARCHAR(30)
 );
 
 

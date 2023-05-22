@@ -12,8 +12,10 @@ VALUES
 ('Fulfillment Team Lead', 4, 80000),
 ('Head of Advertising', 3, 300000);
 
-
-
+INSERT INTO employees (first_name, last_name, role_id, manager)
+VALUES
+('James', 'Sanchez', 2, 'Rick'),
+('Rick', 'DeMarquez', 4, NULL);
 
 
 
