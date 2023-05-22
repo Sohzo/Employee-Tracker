@@ -82,7 +82,15 @@ updateRole = () => {
 }
 
 viewRoles = () => {
+    console.log('Showing all roles\n')
 
+    const sql = `SELECT * FROM roles`
+    con.query(sql, (err, res) => {
+        if (err) throw err;
+
+        console.table(res)
+        showMenu();
+    })
 }
 
 viewDepartments = () => {
