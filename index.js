@@ -1,10 +1,11 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+require('dotenv').config()
 
 const con = mysql.createConnection({
     host:'localhost',
     user:'root',
-    password:'012204Lovelexy()',
+    password: process.env.password,
     database: 'employeetracker_db'
 });
 
@@ -34,7 +35,7 @@ const showMenu = () => {
     ]).then((answers) => {
     
         if (answers.menu === 'View all employees') {
-            showEmployees();
+            viewEmployees();
         };
 
         if (answers.menu === 'Add employee') {
@@ -63,11 +64,41 @@ const showMenu = () => {
     }); 
 };
 
-showEmployees = () => {
+viewEmployees = () => {
     console.log('Showing all employees\n')
 
     const sql = `SELECT * FROM employees`
-    con.query(sql, (err, rows) => {
+    con.query(sql, (err) => {
         if (err) throw err;
     })
 }
+
+addEmployee = () => {
+
+}
+
+updateRole = () => {
+
+}
+
+viewRoles = () => {
+
+}
+
+viewDepartments = () => {
+    console.log('Showing all departments\n')
+    
+    const sql = `SELECT * FROM departments`
+    con.query(sql, (err, res) => {
+        if (err) throw err;
+
+        console.table(res)
+        showMenu();
+    });
+}
+
+addDepartment = () => {
+
+}
+
+
