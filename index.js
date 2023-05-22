@@ -27,6 +27,7 @@ const showMenu = () => {
                 'Add employee',
                 'Update employee role',
                 'View all roles',
+                'Add role',
                 'View all departments',
                 'Add department',
                 'Quit',
@@ -49,6 +50,10 @@ const showMenu = () => {
         if (answers.menu === 'View all roles') {
             viewRoles();
         };
+
+        if (answers.menu === 'Add role') {
+            addRole();
+        }
 
         if (answers.menu === 'View all departments') {
             viewDepartments();
@@ -178,6 +183,54 @@ viewRoles = () => {
     })
 }
 
+addRole = () => {
+    inquirer.prompt([
+        {
+            type:'input',
+            name:'title',
+            message:'What is the name of the role?'
+        },
+        {
+            type:'input',
+            name:'salary',
+            message:'What is the salary of this role?'
+        }
+    ]).then(rolename => {
+        const roleInfo = [rolename.title];
+
+        const deptSql = `SELECT departments.id, departments.dept_name FROM departments`;
+
+        con.query(deptSql, (err, res) => {
+            if(err) throw err;
+
+            const depts = res.map(({id, dept_name}) => ({ name: dept_name, value: id}));
+
+            inquirer.prompt([
+                {
+                    type:'list',
+                    name:'dept',
+                    message:'Which department does this role belong to?',
+                    choices: depts
+                }
+            ]).then(deptchoice => {
+                const dept = deptchoice.dept;
+
+                roleInfo.push(dept);
+                roleInfo.push(rolename.salary);
+                
+                const newRoleSql = `INSERT INTO roles (title, department_id, salary) VALUES(?,?,?)`
+
+                con.query(newRoleSql, roleInfo, (err, res) => {
+                    if(err) throw err;
+
+                    console.log("Role added")
+                    viewRoles();
+                })
+            })
+        })
+    })
+}
+
 viewDepartments = () => {
     console.log('Showing all departments\n')
     
@@ -191,7 +244,23 @@ viewDepartments = () => {
 }
 
 addDepartment = () => {
+    inquirer.prompt([
+        {
+            type:'input',
+            name:'department',
+            message:'What is the name of the department?'
+        }
+    ]).then(deptanswer => {
+        const department = deptanswer.department;
 
+        const deptSql = `INSERT INTO departments (dept_name) VALUES(?)`;
+
+        con.query(deptSql, department, (err, res) => {
+            if(err) throw err;
+
+            viewDepartments();
+        })
+    })
 }
 
 
