@@ -1,4 +1,4 @@
-# Project 011 - Note-Taker
+# Project 012 - Employee-Database
   ![MIT](https://img.shields.io/badge/license-MIT-blue)
 
   ## Description
