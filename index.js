@@ -168,7 +168,57 @@ addEmployee = () => {
 }
 
 updateRole = () => {
+    const employeesSql = `SELECT * FROM employees`;
 
+    con.query(employeesSql, (err, res) => {
+        if(err) throw err;
+
+        const employees = res.map(({id,first_name,last_name}) => ({ name: first_name + " " + last_name, value: id}));
+
+        inquirer.prompt([
+            {
+                type:'list',
+                name:'name',
+                message:'Select employee to update',
+                choices: employees
+            }
+        ]).then(employeechoice => {
+            const employee = employeechoice.name;
+            const fullInfo = [employee];
+
+            const roleSql = `SELECT * FROM roles`;
+
+            con.query(roleSql, (err, res) => {
+                if(err) throw err;
+                const roles = res.map(({id,title}) => ({ name: title, value: id}));
+
+                inquirer.prompt([
+                    {
+                        type:'list',
+                        name:'role',
+                        message:'Select new role for employee',
+                        choices:roles
+                    }
+                ]).then(newRole => {
+                    const role = newRole.role
+                    fullInfo.push(role);
+
+                    fullInfo[0] = role;
+                    fullInfo[1] = employee;
+
+                    const updateSql = `UPDATE employees SET role_id = ? WHERE id = ?`;
+
+                    con.query(updateSql, fullInfo, (err, res) => {
+                        if(err) throw err;
+                        console.log("Updated Employee");
+                        viewEmployees();
+                    })
+                })
+            })
+
+
+        })
+    })
 }
 
 viewRoles = () => {
